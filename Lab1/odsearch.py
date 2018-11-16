@@ -4,7 +4,7 @@ import os
 PHI = 1.6180339887
 
 
-def dichotomy(f, a, b, eps, out=open(os.devnull, 'w')):
+def dichotomy(f, a, b, eps, out=None):
     counter = 0
     delta = eps * 0.48  # delta < eps / 2
     length = b - a
@@ -31,7 +31,7 @@ def dichotomy(f, a, b, eps, out=open(os.devnull, 'w')):
     return res, calls
 
 
-def golden(f, a, b, eps, out=open(os.devnull, 'w')):
+def golden(f, a, b, eps, out=None):
     counter = 0
     x1 = b - (b - a) / PHI
     x2 = a + (b - a) / PHI
@@ -69,7 +69,7 @@ def fib(n):
     return (PHI**n - (1 - PHI)**n) / m.sqrt(5)
 
 
-def fibonacci(f, a, b, eps, out=open(os.devnull, 'w')):
+def fibonacci(f, a, b, eps, out=None):
     counter = 0
     n = m.ceil(m.log((b - a) * m.sqrt(5) / eps) / m.log(PHI))
     x1 = a + (b - a) * fib(n - 2) / fib(n)

@@ -1,7 +1,7 @@
 import math as m
 from Lab1.odsearch import dichotomy, golden, fibonacci
 
-out = open("Lab1/Results.md", "w")
+out = open("Lab1/Results 1.1.md", "w")
 func = lambda x: m.sin(x)
 a0 = -m.pi / 2
 b0 = m.pi / 2
