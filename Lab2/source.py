@@ -35,5 +35,5 @@ input.close()
 
 length, path = (find_path(g, start - 1, end - 1))
 str_path = " -> ".join(map(lambda x: str(x + 1), path[end - 1]))
-print(f"Кратчайший путь: {str_path}")
-print(f"Длина кратчайшего пути от {start} до {end} равен {length[end - 1]}")
+print(f"Оптимальный маршрут: {str_path}")
+print(f"Стоимость оптимального маршрута: {length[end - 1]}")
