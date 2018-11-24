@@ -1,5 +1,6 @@
 from scipy.optimize import minimize_scalar
 import math as m
+from multiprocessing.dummy import Pool as TPool
 
 out = open("Results 1.2.md", "w")
 
@@ -39,10 +40,10 @@ def calculate(x1_old, x2_old, eps, method, details=False):
         if details:
             out.write(
                 f"| **{i}** | {x1_new:0.9f} | {x2_new:0.9f} | {g1:0.9f} | {g2:0.9f} | {lamb.x:0.9f} | {func(x1_new, x2_new):0.9f} |\n")
-        # if abs(x2_old - x2_new) < eps and abs(x1_old - x1_new) < eps:
-        #     break
-        if m.sqrt(g1 ** 2 + g2 ** 2) < eps:
+        if abs(x2_old - x2_new) < eps and abs(x1_old - x1_new) < eps:
             break
+        # if m.sqrt(g1 ** 2 + g2 ** 2) < eps:
+        #     break
         x1_old = x1_new
         x2_old = x2_new
 
@@ -56,13 +57,25 @@ def calculate(x1_old, x2_old, eps, method, details=False):
     return i, calls, x1_old, x2_old, f
 
 
+def calc_and_print(params):
+    res = calculate(params[0], params[1], params[2], "analytic")
+    print(res)
+    out.write(
+        f"| {params[0]} | {params[1]} | {res[0]} | {res[1]} | {res[2]:0.9f} | {res[3]:0.9f} | {res[4]:0.9f} |\n")
+
+
 out.write("# Подробные данные к ЛР 1.2\n")
 out.write("## Аналитическое вычисление градиента\n")
-out.write("| Начальное приближение | Точность | Количество итераций | Число вычислений целевой функции | Найденная точка | Значение функции в ней |\n")
-out.write("| --- | --- | --- | --- | --- | --- |\n")
-for i in range(-5, 5):
-    for j in range(-5, 5):
-        for eps in [1e-3, 1e-5, 1e-7]:
-            res = calculate(i, j, eps, "analytic")
-            print(res)
-            out.write(f"| ({i}, {j}) | {eps} | {res[0]} | {res[1]} | ({res[2]:0.9f}, {res[3]:0.9f}) | {res[4]:0.9f} |\n")
+for eps in [1e-3, 1e-5, 1e-7]:
+    pool = TPool(8)
+    data = []
+    out.write(f"### Точность: {eps}\n")
+    out.write("| x1_0 | x2_0 | iterations | calls | x1_res | x2_res | f(x_res) |\n")
+    out.write("| --- | --- | --- | --- | --- | --- | --- |\n")
+    for i in range(-4, 5):
+        for j in range(-4, 5):
+            data.append((i, j, eps))
+    pool.map(calc_and_print, data)
+    pool.close()
+    pool.join()
+    out.write("\n")
