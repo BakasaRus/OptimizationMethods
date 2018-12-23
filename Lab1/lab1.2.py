@@ -2,7 +2,7 @@ from scipy.optimize import minimize_scalar
 import math as m
 from multiprocessing.dummy import Pool as TPool
 
-out = open("Results 1.2.md", "w")
+out = open("Results 1.2 Num.md", "w")
 
 
 def calculate(x1_old, x2_old, eps, method, details=False):
@@ -58,7 +58,7 @@ def calculate(x1_old, x2_old, eps, method, details=False):
 
 
 def calc_and_print(params):
-    res = calculate(params[0], params[1], params[2], "analytic")
+    res = calculate(params[0], params[1], params[2], "numeric")
     print(res)
     out.write(
         f"| {params[0]} | {params[1]} | {res[0]} | {res[1]} | {res[2]:0.9f} | {res[3]:0.9f} | {res[4]:0.9f} |\n")
